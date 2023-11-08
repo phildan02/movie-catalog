@@ -45,5 +45,10 @@ nav {
 }
 
 .category-radio-button {
-    margin-right: 30px;
+    margin-right: 1rem;
+}
+
+.error-message {
+    font-size: 2rem;
+    margin-left: 11.25px;
 }

@@ -10,29 +10,28 @@ class Main extends React.Component {
         super();
         this.state = {
             movies: [],
-            loading: false
+            loading: false,
+            errorMessage: ''
         };
         this.searchMovies = this.searchMovies.bind(this);
     }
 
     async searchMovies(searchInput, searchCategory) {
-        this.setState({ movies: [], loading: true });
+        this.setState({ movies: [], loading: true, errorMessage: '' });
         let response = await fetch(
             `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}${ (searchCategory === 'all') ? '' : `&type=${searchCategory}` }`
             );
         if (response.ok) {
             const moviesDataJson = await response.json();
             if (moviesDataJson.Response === 'False') {
-                this.setState({ movies: [], loading: false });
-                alert('Фильмы не найдены');
+                this.setState({ loading: false, errorMessage: 'Ничего не найдено' });
             }
             else {
                 this.setState({ movies: moviesDataJson.Search, loading: false });
             }
         }
         else {
-            this.setState({ movies: [], loading: false });
-            setTimeout(() => alert('Ошибка получения данных'), 10);
+            this.setState({ loading: false, errorMessage: 'Ошибка получения данных' });
         }
     }
 
@@ -41,6 +40,7 @@ class Main extends React.Component {
             <main className="container content">
                 <Search onSearchStart={this.searchMovies} />
                 {this.state.loading && <Preloader />}
+                {Boolean(this.state.errorMessage) && <p className='error-message'>{this.state.errorMessage}</p>}
                 {Boolean(this.state.movies.length) && <MoviesList movies={this.state.movies} />}
             </main >
         );
