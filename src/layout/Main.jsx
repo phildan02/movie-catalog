@@ -18,7 +18,7 @@ class Main extends React.Component {
     async searchMovies(searchInput, searchCategory) {
         this.setState({ movies: [], loading: true });
         let response = await fetch(
-            `http://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}${ (searchCategory === 'all') ? '' : `&type=${searchCategory}` }`
+            `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchInput}${ (searchCategory === 'all') ? '' : `&type=${searchCategory}` }`
             );
         if (response.ok) {
             const moviesDataJson = await response.json();
